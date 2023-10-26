@@ -1,0 +1,16 @@
+{
+  "name": "electron-test",
+  "version": "1.0.0",
+  "description": "test for electron",
+  "main": "main.js",
+  "scripts": {
+    "test": "dev",
+    "start": "electron ."
+  },
+  "author": "Mythos Ma",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.4.2",
+    "electron": "^27.0.2"
+  }
+}

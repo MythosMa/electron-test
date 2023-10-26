@@ -1,0 +1,8 @@
+node_modules/
+
+# Editor
+.vscode
+
+# option
+package-lock.json
+yarn.lock
