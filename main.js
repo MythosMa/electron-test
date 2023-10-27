@@ -1,10 +1,10 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require('node:path')
 
-async function handleFileOpen () {
-  const { canceled, filePaths } = await dialog.showOpenDialog()
+async function handleFileOpen() {
+  const { canceled, filePaths } = await dialog.showOpenDialog();
   if (!canceled) {
-    return filePaths[0]
+    return filePaths[0];
   }
 }
 const createWindow = () => {
@@ -22,12 +22,33 @@ const createWindow = () => {
     win.setTitle(title);
   });
 
+  const menu = Menu.buildFromTemplate([
+    {
+      label: "加減测试",
+      submenu: [
+        {
+          click: () => win.webContents.send("update-counter", 1),
+          label: "++",
+        },
+        {
+          click: () => win.webContents.send("update-counter", -1),
+          label: "--",
+        },
+      ],
+    },
+  ]);
+
+  Menu.setApplicationMenu(menu);
+
   win.loadFile("index.html");
 };
 
 app.whenReady().then(() => {
   ipcMain.handle("ping", () => "pong");
-  ipcMain.handle('dialog:openFile', handleFileOpen)
+  ipcMain.handle("dialog:openFile", handleFileOpen);
+  ipcMain.on('counter-value', (_event, value) => {
+    console.log(value) // will print value to Node console
+  })
   createWindow();
 
   app.on("activate", () => {
